@@ -1,11 +1,15 @@
 package traf1.carrdaniel.quizapp;
 
-public class Guy {
-    public int imgSrc;
-    public String face;
+public class Guy{
+    public int eyeInd;
+    public int mouthInd;
 
-    public Guy(int imgSrcD, String faceD) {
-        imgSrc = imgSrcD;
-        face = faceD;
+    public Guy(int ei, int mi) {
+        eyeInd = ei;
+        mouthInd = mi;
+    }
+
+    public boolean equals(Guy g) {
+        return eyeInd == g.eyeInd && mouthInd == g.mouthInd;
     }
 }
