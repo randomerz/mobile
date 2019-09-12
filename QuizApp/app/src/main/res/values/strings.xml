@@ -6,9 +6,7 @@
     <string name="choice">Choice</string>
     <string name="game_over">Game Over</string>
     <string name="restart">Restart</string>
-    <string name="hap">:)</string>
-    <string name="pog">:o</string>
-    <string name="tired">-_-</string>
-    <string name="confused">\'v\'</string>
-    <string name="cool">B)</string>
+    <string name="correct1">Nice!</string>
+    <string name="correct2">Good work!</string>
+    <string name="correct3">Correct!</string>
 </resources>

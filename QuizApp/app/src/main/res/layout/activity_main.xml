@@ -67,7 +67,7 @@
         android:id="@+id/targetDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hap"
+        android:text="description"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -79,7 +79,7 @@
         android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/e1"
+        android:src="@drawable/c1"
         app:layout_constraintTop_toBottomOf="@+id/targetDescription"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@+id/imageButton2"
@@ -98,10 +98,22 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton1" />
 
     <ImageButton
+        android:id="@+id/imageButton1c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton1"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton1"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton1"
+        app:layout_constraintTop_toTopOf="@+id/imageButton1" />
+
+    <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/e2"
+        android:src="@drawable/c2"
         app:layout_constraintTop_toBottomOf="@+id/targetDescription"
         app:layout_constraintLeft_toLeftOf="@+id/imageButton1"
         app:layout_constraintRight_toRightOf="parent"
@@ -120,10 +132,22 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton2" />
 
     <ImageButton
+        android:id="@+id/imageButton2c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        android:src="@drawable/e2"
+        app:layout_constraintRight_toRightOf="@+id/imageButton2"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton2"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
+
+    <ImageButton
         android:id="@+id/imageButton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/e3"
+        android:src="@drawable/c3"
         app:layout_constraintTop_toBottomOf="@+id/imageButton1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="@+id/imageButton4"
@@ -142,10 +166,22 @@
         app:layout_constraintTop_toTopOf="@+id/imageButton3" />
 
     <ImageButton
+        android:id="@+id/imageButton3c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        android:src="@drawable/e3"
+        app:layout_constraintRight_toRightOf="@+id/imageButton3"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton3"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
+        app:layout_constraintTop_toTopOf="@+id/imageButton3" />
+
+    <ImageButton
         android:id="@+id/imageButton4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/e4"
+        android:src="@drawable/c4"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2"
         app:layout_constraintLeft_toLeftOf="@+id/imageButton3"
         app:layout_constraintRight_toRightOf="parent"
@@ -163,15 +199,163 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
         app:layout_constraintTop_toTopOf="@+id/imageButton4" />
 
+    <ImageButton
+        android:id="@+id/imageButton4c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        android:src="@drawable/e4"
+        app:layout_constraintRight_toRightOf="@+id/imageButton4"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton4"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
+        app:layout_constraintTop_toTopOf="@+id/imageButton4" />
+
+    <ImageButton
+        android:id="@+id/imageButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/c1"
+        app:layout_constraintTop_toBottomOf="@+id/targetDescription"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/imageButton1"
+        android:contentDescription="@string/choice" />
+
+    <ImageButton
+        android:id="@+id/imageButton5b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/m1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton5"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton5"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton5"
+        app:layout_constraintTop_toTopOf="@+id/imageButton5" />
+
+    <ImageButton
+        android:id="@+id/imageButton5c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton5"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton5"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton5"
+        app:layout_constraintTop_toTopOf="@+id/imageButton5" />
+
+    <ImageButton
+        android:id="@+id/imageButton6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/c1"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/imageButton1"
+        android:contentDescription="@string/choice" />
+
+    <ImageButton
+        android:id="@+id/imageButton6b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/m1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton6"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton6"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton6"
+        app:layout_constraintTop_toTopOf="@+id/imageButton6" />
+
+    <ImageButton
+        android:id="@+id/imageButton6c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton6"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton6"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton6"
+        app:layout_constraintTop_toTopOf="@+id/imageButton6" />
+
+    <ImageButton
+        android:id="@+id/imageButton7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/c1"
+        app:layout_constraintTop_toBottomOf="@+id/targetDescription"
+        app:layout_constraintLeft_toRightOf="@+id/imageButton2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/choice" />
+
+    <ImageButton
+        android:id="@+id/imageButton7b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/m1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton7"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton7"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton7"
+        app:layout_constraintTop_toTopOf="@+id/imageButton7" />
+
+    <ImageButton
+        android:id="@+id/imageButton7c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton7"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton7"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton7"
+        app:layout_constraintTop_toTopOf="@+id/imageButton7" />
+
+    <ImageButton
+        android:id="@+id/imageButton8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/c1"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton1"
+        app:layout_constraintLeft_toRightOf="@+id/imageButton4"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/choice" />
+
+    <ImageButton
+        android:id="@+id/imageButton8b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/m1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton8"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton8"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
+        app:layout_constraintTop_toTopOf="@+id/imageButton8" />
+
+    <ImageButton
+        android:id="@+id/imageButton8c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/e1"
+        android:background="@null"
+        android:contentDescription="@string/choice"
+        app:layout_constraintRight_toRightOf="@+id/imageButton8"
+        app:layout_constraintLeft_toLeftOf="@+id/imageButton8"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton8"
+        app:layout_constraintTop_toTopOf="@+id/imageButton8" />
+
     <Button
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:contentDescription="@string/choice"
         android:text="@string/restart"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/choice" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
