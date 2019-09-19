@@ -5,6 +5,9 @@
     <string name="high_score">High Score</string>
     <string name="choice">Choice</string>
     <string name="game_over">Game Over</string>
+    <string name="your_target_was">Your target was</string>
+    <string name="you_hit">You hit</string>
+    <string name="nothing">Nothing!</string>
     <string name="restart">Restart</string>
     <string name="correct1">Nice!</string>
     <string name="correct2">Good work!</string>

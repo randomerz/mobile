@@ -1,18 +1,19 @@
 package traf1.carrdaniel.quizapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.os.CountDownTimer;
-import android.view.Gravity;
-import android.widget.Button;
-import android.view.View;
-import android.util.Log;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Random;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     TextView timerText;
     TextView gameOverText;
     TextView highScoreText;
+    ConstraintLayout cl;
 
     Guy[] guys;
     Guy guy1;
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     int highScoreValue;
     CountDownTimer timer;
     String[] correctMessages;
+    CountDownTimer bgColorTimer;
 
     Random random = new Random();
 
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timeLeft);
         gameOverText = findViewById(R.id.gameOver);
         highScoreText = findViewById(R.id.highScore);
+        cl = findViewById(R.id.layout);
 
         b1mouth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -263,19 +267,21 @@ public class MainActivity extends AppCompatActivity {
             Log.i("quizResults", "Correct!");
             scoreValue += 1;
             scoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
-            RestartChoices();
-
-            Toast toast = Toast.makeText(getApplicationContext(), correctMessages[random.nextInt(correctMessages.length)], Toast.LENGTH_SHORT);
-            toast.show();
-            // toast.setGravity(Gravity.TOP| Gravity.LEFT, 0, 0);
 
             if (scoreValue >= newGuyThresh[numGuys - 2]) {
                 numGuys++;
                 AddNewGuyButton(numGuys);
             }
+            RestartChoices();
+
+            Toast toast = Toast.makeText(getApplicationContext(), correctMessages[random.nextInt(correctMessages.length)], Toast.LENGTH_SHORT);
+            toast.show();
+            // toast.setGravity(Gravity.TOP| Gravity.LEFT, 0, 0);
+            FlashScreenRedToWhite();
             return;
         }
         Log.i("quizResults", "Wrong");
+        FlashScreenRedToRedLong();
         GameOver("Wrong target");
     }
 
@@ -346,14 +352,64 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
+    void setButtonsEnabled(boolean e) {
+        for (int i = 0; i < 8; i++) {
+            eyeButtons[i].setEnabled(e);
+            mouthButtons[i].setEnabled(e);
+            colorButtons[i].setEnabled(e);
+        }
+    }
+
+    void FlashScreenRedToWhite() {
+        bgColorTimer = new CountDownTimer(400, 10) {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onTick(long millisUntilFinished) {
+                float rate = 1 - ((float) millisUntilFinished / 400);
+                float r = 220 + ((255 - 220) * rate);
+                float g = 20  + ((255 - 20)  * rate);
+                float b = 60  + ((255 - 60)  * rate);
+                cl.setBackgroundColor(Color.rgb((int) r, (int) g, (int) b));
+            }
+
+            public void onFinish() {
+                cl.setBackgroundColor(Color.rgb(255, 255, 255));
+            }
+        }.start();
+    }
+
+    void FlashScreenRedToRedLong() {
+        bgColorTimer = new CountDownTimer(2000, 10) {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onTick(long millisUntilFinished) {
+                float rate = 1 - ((float) millisUntilFinished / 2000);
+                float r = 220 + ((205 - 220) * rate);
+                float g = 20  + ((92  - 20)  * rate);
+                float b = 60  + ((92  - 60)  * rate);
+                cl.setBackgroundColor(Color.rgb((int) r, (int) g, (int) b));
+            }
+
+            public void onFinish() {
+                cl.setBackgroundColor(Color.rgb(205, 92, 92));
+            }
+        }.start();
+    }
+
     void GameOver(String reason) {
         Log.i("quizResults", "game over, reason:");
         Log.i("quizResults", reason);
+
+        /*
+        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String message = editText.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+        */
+
         gameOverText.setVisibility(View.VISIBLE);
         highScoreText.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
-        for (int i = 0; i < 4; i++)
-            mouthButtons[i].setEnabled(false);
+        setButtonsEnabled(false);
 
         if (scoreValue > highScoreValue) {
             highScoreValue = scoreValue;
@@ -371,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
 
     void RestartGame() {
         scoreValue = 0;
-        scoreText.setText(String.format("%s %d", getString(R.string.score), scoreValue));
+        scoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
         gameOverText.setVisibility(View.GONE);
         highScoreText.setVisibility(View.GONE);
         restartButton.setVisibility(View.GONE);
@@ -381,8 +437,13 @@ public class MainActivity extends AppCompatActivity {
             colorButtons[i].setVisibility(View.GONE);
         }
         numGuys = 2;
-        for (int i = 0; i < 8; i++)
-            mouthButtons[i].setEnabled(true);
+        setButtonsEnabled(true);
+
+        if (bgColorTimer != null) {
+            bgColorTimer.cancel();
+            bgColorTimer = null;
+        }
+        cl.setBackgroundColor(Color.rgb(255, 255, 255));
         RestartChoices();
     }
 }

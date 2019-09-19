@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bigger Number</string>
+    <string name="instructions">Click on the bigger number!</string>
+    <string name="enter_name">Please enter your name</string>
+    <string name="score">Score:</string>
+    <string name="zero">0</string>
+    <string name="start">Start</string>
+</resources>
