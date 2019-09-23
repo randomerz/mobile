@@ -1,6 +1,8 @@
 package traf1.carrdaniel.quizapp;
 
-public class Guy{
+import java.io.Serializable;
+
+public class Guy implements Serializable {
     public int eyeInd;
     public int mouthInd;
     public int colorInd;

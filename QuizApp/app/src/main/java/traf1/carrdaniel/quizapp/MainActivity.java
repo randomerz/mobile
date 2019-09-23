@@ -1,5 +1,6 @@
 package traf1.carrdaniel.quizapp;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Log.i("quizResults", "Wrong");
         FlashScreenRedToRedLong();
-        GameOver("Wrong target");
+        GameOver("Wrong target", guys[choice]);
     }
 
     void RestartChoices() {
@@ -317,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onFinish() {
                 timerText.setText("0.00");
-                GameOver("Out of time");
+                GameOver("Out of time", null);
             }
         }.start();
     }
@@ -394,35 +395,37 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
-    void GameOver(String reason) {
+    void GameOver(String reason, Guy hit) {
         Log.i("quizResults", "game over, reason:");
         Log.i("quizResults", reason);
 
-        /*
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-        */
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
 
+        /*
         gameOverText.setVisibility(View.VISIBLE);
         highScoreText.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
         setButtonsEnabled(false);
+         */
+        Intent i = new Intent(getApplicationContext(), game_over.class);
+        i.putExtra("score", scoreValue);
+        i.putExtra("gameOverReason", reason);
+        i.putExtra("targetGuy", guys[targetNumber]);
+        i.putExtra("youHitGuy", hit);
+        startActivity(i);
 
+        /*
         if (scoreValue > highScoreValue) {
             highScoreValue = scoreValue;
             highScoreText.setText(String.format("* %s: %d *", getString(R.string.score), scoreValue));
         }
         else
             highScoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
-
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-        //RestartGame();
+        */
+        RestartGame();
     }
 
     void RestartGame() {
