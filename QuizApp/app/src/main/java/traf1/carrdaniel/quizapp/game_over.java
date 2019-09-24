@@ -2,6 +2,7 @@ package traf1.carrdaniel.quizapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -41,6 +42,43 @@ public class game_over extends AppCompatActivity {
         scoreText = findViewById(R.id.yourScore);
         highScoreText = findViewById(R.id.highScore);
 
+        Intent intent = getIntent();
+        int scoreValue = intent.getIntExtra("score", 0);
+        String reason = intent.getStringExtra("gameOverReason");
+        Guy targetGuy = (Guy) intent.getSerializableExtra("targetGuy");
+        Guy hitGuy    = (Guy) intent.getSerializableExtra("youHitGuy");
+        int targetGuyc = intent.getIntExtra("targetGuyc", -1);
+        int targetGuye = intent.getIntExtra("targetGuye", -1);
+        int targetGuym = intent.getIntExtra("targetGuym", -1);
+        int hitGuyc = intent.getIntExtra("youHitGuyc", -1);
+        int hitGuye = intent.getIntExtra("youHitGuye", -1);
+        int hitGuym = intent.getIntExtra("youHitGuym", -1);
+
+        scoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
+        if (scoreValue > highScore) {
+            highScore = scoreValue;
+            highScoreText.setText(String.format("* %s: %d *", getString(R.string.high_score), scoreValue));
+        }
+        else
+            highScoreText.setText(String.format("%s: %d", getString(R.string.high_score), scoreValue));
+
+        targetc.setImageResource(targetGuyc);
+        targete.setImageResource(targetGuye);
+        targetm.setImageResource(targetGuym);
+        if (hitGuy == null) {
+            nothingText.setVisibility(View.VISIBLE);
+            hite.setVisibility(View.GONE);
+            hitm.setVisibility(View.GONE);
+            hitc.setImageResource(R.drawable.c0);
+        }
+        else {
+            nothingText.setVisibility(View.GONE);
+            hite.setVisibility(View.VISIBLE);
+            hitm.setVisibility(View.VISIBLE);
+            hitc.setImageResource(hitGuyc);
+            hite.setImageResource(hitGuye);
+            hitm.setImageResource(hitGuym);
+        }
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,46 +86,6 @@ public class game_over extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
-        //super.onActivityResult(requestCode, resultCode, resultIntent);
-        if(resultCode == 100){
-
-            // Storing result in a variable called myvar
-            // get("website") 'website' is the key value result data
-            int scoreValue = resultIntent.getIntExtra("score", 0);
-            String reason = resultIntent.getStringExtra("gameOverReason");
-            Guy targetGuy = (Guy) resultIntent.getSerializableExtra("targetGuy");
-            Guy hitGuy    = (Guy) resultIntent.getSerializableExtra("youHitGuy");
-
-            scoreText.setText(String.format("* %s: %d *", getString(R.string.score), scoreValue));
-            if (scoreValue > highScore) {
-                highScore = scoreValue;
-                highScoreText.setText(String.format("* %s: %d *", getString(R.string.high_score), scoreValue));
-            }
-            else
-                highScoreText.setText(String.format("%s: %d", getString(R.string.high_score), scoreValue));
-
-            targetc.setImageResource(mouthSprite[g.mouthInd]);
-            targete.setImageResource(eyeSprite[g.eyeInd]);
-            targetm.setImageResource(colorSprite[g.colorInd]);
-            if (hitGuy == null) {
-                nothingText.setVisibility(View.VISIBLE);
-                hitc.setVisibility(View.GONE);
-                hite.setVisibility(View.GONE);
-                hitm.setVisibility(View.GONE);
-            }
-            else {
-                nothingText.setVisibility(View.GONE);
-                hitc.setVisibility(View.VISIBLE);
-                hite.setVisibility(View.VISIBLE);
-                hitm.setVisibility(View.VISIBLE);
-                hitc.setImageResource(mouthSprite[g.mouthInd]);
-                hite.setImageResource(eyeSprite[g.eyeInd]);
-                hitm.setImageResource(colorSprite[g.colorInd]);
-            }
-        }
-
+        Log.i("guy", hitGuyc + "");
     }
 }

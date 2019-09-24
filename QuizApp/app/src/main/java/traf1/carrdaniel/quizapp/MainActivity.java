@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -275,15 +274,14 @@ public class MainActivity extends AppCompatActivity {
             }
             RestartChoices();
 
-            Toast toast = Toast.makeText(getApplicationContext(), correctMessages[random.nextInt(correctMessages.length)], Toast.LENGTH_SHORT);
-            toast.show();
-            // toast.setGravity(Gravity.TOP| Gravity.LEFT, 0, 0);
+            //Toast toast = Toast.makeText(getApplicationContext(), correctMessages[random.nextInt(correctMessages.length)], Toast.LENGTH_SHORT);
+            //toast.show();
             FlashScreenRedToWhite();
             return;
         }
         Log.i("quizResults", "Wrong");
         FlashScreenRedToRedLong();
-        GameOver("Wrong target", guys[choice]);
+        GameOver("Wrong target", guys[choice - 1]);
     }
 
     void RestartChoices() {
@@ -314,6 +312,14 @@ public class MainActivity extends AppCompatActivity {
                 int seconds = (int) (millisUntilFinished / 1000);
                 int ms = (int) ((millisUntilFinished % 1000) / 10);
                 timerText.setText(String.format("%d.%02d", seconds, ms));
+
+                if (millisUntilFinished < 4000) {
+                    float rate = 1 - ((float) millisUntilFinished / 4000);
+                    float r = 255 - ((255 - 255) * rate);
+                    float g = 255 - ((255 - 105) * rate);
+                    float b = 255 - ((255 - 97) * rate);
+                    cl.setBackgroundColor(Color.rgb((int) r, (int) g, (int) b));
+                }
             }
 
             public void onFinish() {
@@ -414,8 +420,16 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("score", scoreValue);
         i.putExtra("gameOverReason", reason);
         i.putExtra("targetGuy", guys[targetNumber]);
+        i.putExtra("targetGuyc", colorSprite[guys[targetNumber].colorInd]);
+        i.putExtra("targetGuye", eyeSprite[guys[targetNumber].eyeInd]);
+        i.putExtra("targetGuym", mouthSprite[guys[targetNumber].mouthInd]);
         i.putExtra("youHitGuy", hit);
-        startActivity(i);
+        if (hit != null) {
+            i.putExtra("youHitGuyc", colorSprite[hit.colorInd]);
+            i.putExtra("youHitGuye", eyeSprite[hit.eyeInd]);
+            i.putExtra("youHitGuym", mouthSprite[hit.mouthInd]);
+        }
+        startActivityForResult(i, 100);
 
         /*
         if (scoreValue > highScoreValue) {
@@ -425,15 +439,28 @@ public class MainActivity extends AppCompatActivity {
         else
             highScoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
         */
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.i("guy", "PAUSED!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         RestartGame();
     }
 
     void RestartGame() {
         scoreValue = 0;
         scoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
-        gameOverText.setVisibility(View.GONE);
-        highScoreText.setVisibility(View.GONE);
-        restartButton.setVisibility(View.GONE);
+        //gameOverText.setVisibility(View.GONE);
+        //highScoreText.setVisibility(View.GONE);
+        //restartButton.setVisibility(View.GONE);
         for (int i = 2; i < 8; i++) {
             mouthButtons[i].setVisibility(View.GONE);
             eyeButtons[i].setVisibility(View.GONE);
