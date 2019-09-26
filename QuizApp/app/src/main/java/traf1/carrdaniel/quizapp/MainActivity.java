@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     ImageButton b6mouth;
     ImageButton b7mouth;
     ImageButton b8mouth;
+    ImageButton b9mouth;
+    ImageButton b10mouth;
+    ImageButton b11mouth;
+    ImageButton b12mouth;
     ImageButton b1eye;
     ImageButton b2eye;
     ImageButton b3eye;
@@ -34,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     ImageButton b6eye;
     ImageButton b7eye;
     ImageButton b8eye;
+    ImageButton b9eye;
+    ImageButton b10eye;
+    ImageButton b11eye;
+    ImageButton b12eye;
     ImageButton b1color;
     ImageButton b2color;
     ImageButton b3color;
@@ -42,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     ImageButton b6color;
     ImageButton b7color;
     ImageButton b8color;
+    ImageButton b9color;
+    ImageButton b10color;
+    ImageButton b11color;
+    ImageButton b12color;
     Button restartButton;
 
     ImageButton[] mouthButtons;
@@ -70,16 +82,19 @@ public class MainActivity extends AppCompatActivity {
     Guy guy6;
     Guy guy7;
     Guy guy8;
+    Guy guy9;
+    Guy guy10;
+    Guy guy11;
+    Guy guy12;
 
-    int[] newGuyThresh = {1, 2, 4, 7, 10, 14, 9999};
+    //int[] newGuyThresh = {1, 2, 4, 7, 10, 14, 18, 22, 26, 30, 9999};
+    int[] newGuyThresh = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9999};
     int numGuys;
 
     int targetNumber;
 
     int scoreValue;
-    int highScoreValue;
     CountDownTimer timer;
-    String[] correctMessages;
     CountDownTimer bgColorTimer;
 
     Random random = new Random();
@@ -97,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
         b6mouth = findViewById(R.id.imageButton6c);
         b7mouth = findViewById(R.id.imageButton7c);
         b8mouth = findViewById(R.id.imageButton8c);
+        b9mouth = findViewById(R.id.imageButton9c);
+        b10mouth = findViewById(R.id.imageButton10c);
+        b11mouth = findViewById(R.id.imageButton11c);
+        b12mouth = findViewById(R.id.imageButton12c);
         b1eye = findViewById(R.id.imageButton1b);
         b2eye = findViewById(R.id.imageButton2b);
         b3eye = findViewById(R.id.imageButton3b);
@@ -105,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         b6eye = findViewById(R.id.imageButton6b);
         b7eye = findViewById(R.id.imageButton7b);
         b8eye = findViewById(R.id.imageButton8b);
+        b9eye = findViewById(R.id.imageButton9b);
+        b10eye = findViewById(R.id.imageButton10b);
+        b11eye = findViewById(R.id.imageButton11b);
+        b12eye = findViewById(R.id.imageButton12b);
         b1color = findViewById(R.id.imageButton1);
         b2color = findViewById(R.id.imageButton2);
         b3color = findViewById(R.id.imageButton3);
@@ -113,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
         b6color = findViewById(R.id.imageButton6);
         b7color = findViewById(R.id.imageButton7);
         b8color = findViewById(R.id.imageButton8);
+        b9color = findViewById(R.id.imageButton9);
+        b10color = findViewById(R.id.imageButton10);
+        b11color = findViewById(R.id.imageButton11);
+        b12color = findViewById(R.id.imageButton12);
         restartButton = findViewById(R.id.restartButton);
         targetDescriptionText = findViewById(R.id.targetDescription);
         scoreText = findViewById(R.id.score);
@@ -169,17 +196,36 @@ public class MainActivity extends AppCompatActivity {
                 checkAnswer(8);
             }
         });
+        b9mouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(9);
+            }
+        });
+        b10mouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(10);
+            }
+        });
+        b11mouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(11);
+            }
+        });
+        b12mouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(12);
+            }
+        });
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RestartGame();
             }
         });
-
-        correctMessages = new String[3];
-        correctMessages[0] = getString(R.string.correct1);
-        correctMessages[1] = getString(R.string.correct2);
-        correctMessages[2] = getString(R.string.correct3);
 
         guy1 = new Guy(0, 0, 0);
         guy2 = new Guy(0, 0, 0);
@@ -189,7 +235,11 @@ public class MainActivity extends AppCompatActivity {
         guy6 = new Guy(0, 0, 0);
         guy7 = new Guy(0, 0, 0);
         guy8 = new Guy(0, 0, 0);
-        guys = new Guy[8];
+        guy9 = new Guy(0, 0, 0);
+        guy10 = new Guy(0, 0, 0);
+        guy11 = new Guy(0, 0, 0);
+        guy12 = new Guy(0, 0, 0);
+        guys = new Guy[12];
         guys[0] = guy1;
         guys[1] = guy2;
         guys[2] = guy3;
@@ -198,8 +248,12 @@ public class MainActivity extends AppCompatActivity {
         guys[5] = guy6;
         guys[6] = guy7;
         guys[7] = guy8;
+        guys[8] = guy9;
+        guys[9] = guy10;
+        guys[10] = guy11;
+        guys[11] = guy12;
 
-        mouthButtons = new ImageButton[8];
+        mouthButtons = new ImageButton[12];
         mouthButtons[0] = b1mouth;
         mouthButtons[1] = b2mouth;
         mouthButtons[2] = b3mouth;
@@ -208,7 +262,11 @@ public class MainActivity extends AppCompatActivity {
         mouthButtons[5] = b6mouth;
         mouthButtons[6] = b7mouth;
         mouthButtons[7] = b8mouth;
-        eyeButtons = new ImageButton[8];
+        mouthButtons[8] = b9mouth;
+        mouthButtons[9] = b10mouth;
+        mouthButtons[10] = b11mouth;
+        mouthButtons[11] = b12mouth;
+        eyeButtons = new ImageButton[12];
         eyeButtons[0] = b1eye;
         eyeButtons[1] = b2eye;
         eyeButtons[2] = b3eye;
@@ -217,7 +275,11 @@ public class MainActivity extends AppCompatActivity {
         eyeButtons[5] = b6eye;
         eyeButtons[6] = b7eye;
         eyeButtons[7] = b8eye;
-        colorButtons = new ImageButton[8];
+        eyeButtons[8] = b9eye;
+        eyeButtons[9] = b10eye;
+        eyeButtons[10] = b11eye;
+        eyeButtons[11] = b12eye;
+        colorButtons = new ImageButton[12];
         colorButtons[0] = b1color;
         colorButtons[1] = b2color;
         colorButtons[2] = b3color;
@@ -226,6 +288,10 @@ public class MainActivity extends AppCompatActivity {
         colorButtons[5] = b6color;
         colorButtons[6] = b7color;
         colorButtons[7] = b8color;
+        colorButtons[8] = b9color;
+        colorButtons[9] = b10color;
+        colorButtons[10] = b11color;
+        colorButtons[11] = b12color;
 
         mouthSprite = new int[4];
         mouthSprite[0] = R.drawable.m1;
@@ -274,8 +340,6 @@ public class MainActivity extends AppCompatActivity {
             }
             RestartChoices();
 
-            //Toast toast = Toast.makeText(getApplicationContext(), correctMessages[random.nextInt(correctMessages.length)], Toast.LENGTH_SHORT);
-            //toast.show();
             FlashScreenRedToWhite();
             return;
         }
@@ -359,14 +423,6 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
-    void setButtonsEnabled(boolean e) {
-        for (int i = 0; i < 8; i++) {
-            eyeButtons[i].setEnabled(e);
-            mouthButtons[i].setEnabled(e);
-            colorButtons[i].setEnabled(e);
-        }
-    }
-
     void FlashScreenRedToWhite() {
         bgColorTimer = new CountDownTimer(400, 10) {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -401,6 +457,14 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    void setButtonsEnabled(boolean b) {
+        for (int i = 0; i < colorButtons.length; i++) {
+            colorButtons[i].setEnabled(b);
+            eyeButtons[i].setEnabled(b);
+            mouthButtons[i].setEnabled(b);
+        }
+    }
+
     void GameOver(String reason, Guy hit) {
         Log.i("quizResults", "game over, reason:");
         Log.i("quizResults", reason);
@@ -414,8 +478,9 @@ public class MainActivity extends AppCompatActivity {
         gameOverText.setVisibility(View.VISIBLE);
         highScoreText.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
-        setButtonsEnabled(false);
          */
+        setButtonsEnabled(false);
+
         Intent i = new Intent(getApplicationContext(), game_over.class);
         i.putExtra("score", scoreValue);
         i.putExtra("gameOverReason", reason);
@@ -461,14 +526,14 @@ public class MainActivity extends AppCompatActivity {
         //gameOverText.setVisibility(View.GONE);
         //highScoreText.setVisibility(View.GONE);
         //restartButton.setVisibility(View.GONE);
-        for (int i = 2; i < 8; i++) {
+        for (int i = 2; i < colorButtons.length; i++) {
             mouthButtons[i].setVisibility(View.GONE);
             eyeButtons[i].setVisibility(View.GONE);
             colorButtons[i].setVisibility(View.GONE);
         }
         numGuys = 2;
-        setButtonsEnabled(true);
 
+        setButtonsEnabled(true);
         if (bgColorTimer != null) {
             bgColorTimer.cancel();
             bgColorTimer = null;
