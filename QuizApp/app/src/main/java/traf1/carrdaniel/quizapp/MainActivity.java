@@ -87,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
     Guy guy11;
     Guy guy12;
 
-    //int[] newGuyThresh = {1, 2, 4, 7, 10, 14, 18, 22, 26, 30, 9999};
-    int[] newGuyThresh = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9999};
+    int[] newGuyThresh = {1, 2, 4, 7, 10, 14, 18, 22, 26, 30, 9999};
+    //int[] newGuyThresh = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9999};
     int numGuys;
 
     int targetNumber;
