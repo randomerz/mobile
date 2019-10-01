@@ -9,11 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import java.util.Random;
 
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     ImageButton b11color;
     ImageButton b12color;
     Button restartButton;
+    ImageView pausePanel;
+    boolean isPaused;
+    boolean gameOver;
 
     ImageButton[] mouthButtons;
     int[] mouthSprite;
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     int scoreValue;
     CountDownTimer timer;
+    long gameTimeLeftInMillis = 5000;
     CountDownTimer bgColorTimer;
 
     Random random = new Random();
@@ -147,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         gameOverText = findViewById(R.id.gameOver);
         highScoreText = findViewById(R.id.highScore);
         cl = findViewById(R.id.layout);
+        pausePanel = findViewById(R.id.pauseBackground);
 
         b1mouth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +231,10 @@ public class MainActivity extends AppCompatActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RestartGame();
+                if (isPaused)
+                    ResumeGame();
+                else
+                    RestartGame();
             }
         });
 
@@ -325,7 +336,24 @@ public class MainActivity extends AppCompatActivity {
         colorDesc[2] = "Blue";
         colorDesc[3] = "Yellow";
 
+        pausePanel.setVisibility(View.GONE);
+
         RestartGame();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        PauseGame();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (gameOver)
+            RestartGame();
     }
 
     void checkAnswer(int choice) {
@@ -376,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
                 int seconds = (int) (millisUntilFinished / 1000);
                 int ms = (int) ((millisUntilFinished % 1000) / 10);
                 timerText.setText(String.format("%d.%02d", seconds, ms));
+                gameTimeLeftInMillis = millisUntilFinished;
 
                 if (millisUntilFinished < 4000) {
                     float rate = 1 - ((float) millisUntilFinished / 4000);
@@ -465,6 +494,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    void PauseGame() {
+        if (!gameOver) {
+            isPaused = true;
+            Log.i("Guy", "paused game " + isPaused);
+            pausePanel.setVisibility(View.VISIBLE);
+            restartButton.setText(R.string.resume);
+            timer.cancel();
+        }
+    }
+
+    void ResumeGame() {
+        if (!gameOver) {
+            Log.i("Guy", "resumed game");
+            isPaused = false;
+            pausePanel.setVisibility(View.GONE);
+            restartButton.setText(R.string.restart);
+
+            timer = new CountDownTimer(gameTimeLeftInMillis, 10) {
+                public void onTick(long millisUntilFinished) {
+                    int seconds = (int) (millisUntilFinished / 1000);
+                    int ms = (int) ((millisUntilFinished % 1000) / 10);
+                    timerText.setText(String.format("%d.%02d", seconds, ms));
+                    gameTimeLeftInMillis = millisUntilFinished;
+
+                    if (millisUntilFinished < 4000) {
+                        float rate = 1 - ((float) millisUntilFinished / 4000);
+                        float r = 255 - ((255 - 255) * rate);
+                        float g = 255 - ((255 - 105) * rate);
+                        float b = 255 - ((255 - 97) * rate);
+                        cl.setBackgroundColor(Color.rgb((int) r, (int) g, (int) b));
+                    }
+                }
+
+                public void onFinish() {
+                    timerText.setText("0.00");
+                    GameOver("Out of time", null);
+                }
+            }.start();
+        }
+    }
+
     void GameOver(String reason, Guy hit) {
         Log.i("quizResults", "game over, reason:");
         Log.i("quizResults", reason);
@@ -479,6 +549,7 @@ public class MainActivity extends AppCompatActivity {
         highScoreText.setVisibility(View.VISIBLE);
         restartButton.setVisibility(View.VISIBLE);
          */
+        gameOver = true;
         setButtonsEnabled(false);
 
         Intent i = new Intent(getApplicationContext(), game_over.class);
@@ -506,20 +577,6 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Log.i("guy", "PAUSED!!!!!!!!!!!!!!!!!!!!!!");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        RestartGame();
-    }
-
     void RestartGame() {
         scoreValue = 0;
         scoreText.setText(String.format("%s: %d", getString(R.string.score), scoreValue));
@@ -533,6 +590,7 @@ public class MainActivity extends AppCompatActivity {
         }
         numGuys = 2;
 
+        gameOver = false;
         setButtonsEnabled(true);
         if (bgColorTimer != null) {
             bgColorTimer.cancel();
