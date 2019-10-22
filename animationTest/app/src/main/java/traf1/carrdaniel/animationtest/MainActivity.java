@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawView = findViewById(R.id.drawView);
+        drawView.scoreText = findViewById(R.id.score_text);
 
         final TextView angleView = (TextView) findViewById(R.id.tv_angle);
         final TextView offsetView = (TextView) findViewById(R.id.tv_offset);
@@ -36,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
                 angleView.setText("Angle: " + degrees);
                 offsetView.setText(String.format("Offset: %s", offset));
 
+
                 double rads = Math.toRadians(degrees);
-                drawView.aX =  speed * offset * (float) Math.cos(rads);
-                drawView.aY = -speed * offset * (float) Math.sin(rads);
+                drawView.playerSprite.aX =  speed * offset * (float) Math.cos(rads);
+                drawView.playerSprite.aY = -speed * offset * (float) Math.sin(rads);
                 //drawView.theta = rads;
             }
 
@@ -47,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 angleView.setText("Angle: none");
                 offsetView.setText("Offset: none");
 
-                drawView.aX = 0;
-                drawView.aY = 0;
+                drawView.playerSprite.aX = 0;
+                drawView.playerSprite.aY = 0;
             }
         });
     }

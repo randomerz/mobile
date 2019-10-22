@@ -5,27 +5,33 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
+
+import static android.graphics.Bitmap.createBitmap;
 
 class Sprite {
     public float x, y;
     public float vX, vY;
+    public float aX, aY;
     public int width, height;
 
-    private static final int BMP_COLUMNS = 4;
-    private static final int BMP_ROWS = 4;
-    private static final int DOWN=0, LEFT=1, RIGHT=2, UP=3;
-    private int color;
+    public int sheet_rows, sheet_cols;
+    private int cropWidth, cropHeight;
     private Bitmap bitmap;
-    private int currentFrame=0, iconWidth, iconHeight, animationDelay=20;
+    private int currentFrame = 0, animationDelay, baseAnimationDelay;
+
+
+    private int color;
+
     public Sprite() {
-        this(1,2, Color.RED);
+        this(0, 0,  Color.RED);
     }
     public Sprite(int dX, int dY, int color) {
-        this(1,1,11,11,dX,dY,color);
+        this(1, 1, 11, 11, dX, dY, color);
     }
 
-    public Sprite(float left, float top, float right, float bottom) {
-        //this(left, top, right, bottom,1,2,Color.RED);
+    public Sprite(float x, float y, int width, int height) {
+        this(x, y, width, height,0,0,Color.RED);
     }
 
     public Sprite(float x, float y, int width, int height, int dX, int dY, int color) {
@@ -52,13 +58,43 @@ class Sprite {
 
 
         // Sprite sheet
-        if(animationDelay-- < 0) {
-            currentFrame = ++currentFrame % BMP_COLUMNS;//cycles current image with boundary proteciton
-            animationDelay = 20;
+        if(animationDelay-- < 0 && bitmap != null) {
+            currentFrame = ++currentFrame % sheet_cols; //cycles current image with boundary proteciton
+            animationDelay = baseAnimationDelay;
         }
     }
 
-    public void draw(Canvas canvas){
+    public void updateDrag(Canvas canvas) {
+        // Physics
+        // drag
+        double theta = Math.atan2(vY, vX);
+        double d = .02 * Math.pow(vX * vX + vY * vY, .5);
+
+        aX -= d * Math.cos(theta);
+        aY -= d * Math.sin(theta);
+
+        x += vX;
+        y += vY;
+        vX += aX;
+        vY += aY;
+
+        aX += d * Math.cos(theta);
+        aY += d * Math.sin(theta);
+
+        float r = width / 2;
+        if (x < 0) {x = 0; vX = -vX * .5f; vY *= .5f;}
+        if (y < 0) {y = 0; vY = -vY * .5f; vX *= .5f;}
+        if (x + width  > canvas.getWidth())  {x = canvas.getWidth()  - width;  vX = -vX * .5f; vY *= .5f;}
+        if (y + height > canvas.getHeight()) {y = canvas.getHeight() - height; vY = -vY * .5f; vX *= .5f;}
+
+        // Sprite sheet
+        if(animationDelay-- < 0 && bitmap != null) {
+            currentFrame = ++currentFrame % sheet_cols; //cycles current image with boundary proteciton
+            animationDelay = baseAnimationDelay;
+        }
+    }
+
+    public void draw(Canvas canvas) {
         if(bitmap == null) {
             Paint paint = new Paint();
             paint.setColor(color);
@@ -66,15 +102,24 @@ class Sprite {
             canvas.drawCircle(x + r, y + r, r, paint); //draws circle
         }
         else {
-            iconWidth = bitmap.getWidth() / BMP_COLUMNS;//calculate width of 1 image
-            iconHeight = bitmap.getHeight() / BMP_ROWS; //calculate height of 1 image
-            int srcX = currentFrame * iconWidth;       //set x of source rectangle inside of bitmap based on current frame
-            int srcY = getAnimationRow() * iconHeight; //set y to row of bitmap based on direction
-            Rect src = new Rect(srcX, srcY, srcX + iconWidth, srcY + iconHeight);  //defines the rectangle inside of heroBmp to displayed
-            canvas.drawBitmap(bitmap, x, y,null); //draw an image
+            cropWidth = bitmap.getWidth() / sheet_cols;   //calculate width of 1 image
+            cropHeight = bitmap.getHeight() / sheet_rows; //calculate height of 1 image
+            int srcX = currentFrame * cropWidth;       //set x to the Nth frame
+            //int srcY = getAnimationRow() * iconHeight; //set y to row of bitmap based on direction
+            int srcY = 0 * cropHeight; // only 1 row please
+            //Rect crop = new Rect(srcX, srcY, srcX + cropWidth, srcY + cropHeight);  //defines the rectangle inside of heroBmp to displayed
+            Bitmap crop = createBitmap(bitmap, srcX, srcY, cropWidth, cropHeight);
+            canvas.drawBitmap(crop, x, y, null); //draw an image
         }
     }
 
+    public void setSpriteSheetStuff(Bitmap sheet, int rows, int cols, int delay) {
+        this.bitmap = sheet;
+        this.sheet_rows = rows;
+        this.sheet_cols = cols;
+        this.baseAnimationDelay = this.animationDelay = delay;
+    }
+    /*
     private int getAnimationRow() {
         if (Math.abs(vX)>Math.abs(vY)){         //if magnitude of x is bigger than magnitude y
             if(Math.abs(vX)==vX) return RIGHT;  //if x is positive return row 2 for right
@@ -83,6 +128,7 @@ class Sprite {
         else return UP;                                 //if y is positive return row 3 for up
 
     }
+    */
 
     public int getColor() {
         return color;
@@ -103,5 +149,13 @@ class Sprite {
     public void grow(int i) {
         width += i;
         height += i;
+    }
+
+    public boolean intersectCircle(Sprite other) {
+        float r1 = width / 2;
+        float r2 = other.width / 2;
+        double dist = Math.pow(Math.pow(x + r1 - other.x - r2, 2) + Math.pow(y + r1 - other.y - r2, 2), 0.5);
+        double rads = r1 + r2;
+        return dist < rads; // collide if dist is less than rads combined
     }
 }

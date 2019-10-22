@@ -27,6 +27,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_angle" />
 
+    <TextView
+        android:id="@+id/score_text"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_offset"
+        android:layout_marginLeft="304dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_offset" />
+
     <traf1.carrdaniel.animationtest.Joystick
         android:id="@+id/joystick"
         android:layout_width="150dp"
