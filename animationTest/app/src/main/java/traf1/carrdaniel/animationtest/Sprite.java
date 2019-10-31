@@ -3,6 +3,7 @@ package traf1.carrdaniel.animationtest;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
@@ -14,12 +15,14 @@ class Sprite {
     public float vX, vY;
     public float aX, aY;
     public int width, height;
+    float mass = 1;
 
     public int sheet_rows, sheet_cols;
     private int cropWidth, cropHeight;
-    private Bitmap bitmap;
+    private Bitmap bitmap, rotatedBitmap;
     private int currentFrame = 0, animationDelay, baseAnimationDelay;
-
+    private boolean doAnimations;
+float deg =22;
 
     private int color;
 
@@ -48,17 +51,15 @@ class Sprite {
         // Physics
         if(x + vX < 0 || x + width + vX > canvas.getWidth())
             vX *= -1;
-        if(y + vY > canvas.getHeight())
-            y = 0; //teleport to top of screen
-        if(y + vY < 0)
-            y = canvas.getHeight();
+        if(y + vY < 0 || y + height + vY > canvas.getHeight())
+            vY *= -1;
 
         x += vX;
         y += vY;
 
 
         // Sprite sheet
-        if(animationDelay-- < 0 && bitmap != null) {
+        if(doAnimations && animationDelay-- < 0 && bitmap != null) {
             currentFrame = ++currentFrame % sheet_cols; //cycles current image with boundary proteciton
             animationDelay = baseAnimationDelay;
         }
@@ -88,7 +89,7 @@ class Sprite {
         if (y + height > canvas.getHeight()) {y = canvas.getHeight() - height; vY = -vY * .5f; vX *= .5f;}
 
         // Sprite sheet
-        if(animationDelay-- < 0 && bitmap != null) {
+        if(doAnimations && animationDelay-- < 0 && bitmap != null) {
             currentFrame = ++currentFrame % sheet_cols; //cycles current image with boundary proteciton
             animationDelay = baseAnimationDelay;
         }
@@ -99,7 +100,22 @@ class Sprite {
             Paint paint = new Paint();
             paint.setColor(color);
             float r = width / 2;
-            canvas.drawCircle(x + r, y + r, r, paint); //draws circle
+            canvas.drawCircle(x + r, y + r, r, paint);
+        }
+        else if (rotatedBitmap != null) {
+            Paint paint = new Paint();
+            paint.setColor(color);
+            paint.setStyle(Paint.Style.STROKE);
+            float r = width / 2;
+            canvas.drawCircle(x + r, y + r, r, paint);
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+
+            Rect target= new Rect((int)x,(int)y, (int)(x+width),(int)(y+height));
+            canvas.save();
+            canvas.rotate((float)Math.toDegrees(Math.atan2(vY, vX)),x+r,y+r);
+            canvas.drawBitmap(bitmap, null,target, null);
+            canvas.restore();
+            rotatedBitmap = null;
         }
         else {
             cropWidth = bitmap.getWidth() / sheet_cols;   //calculate width of 1 image
@@ -109,7 +125,7 @@ class Sprite {
             int srcY = 0 * cropHeight; // only 1 row please
             //Rect crop = new Rect(srcX, srcY, srcX + cropWidth, srcY + cropHeight);  //defines the rectangle inside of heroBmp to displayed
             Bitmap crop = createBitmap(bitmap, srcX, srcY, cropWidth, cropHeight);
-            canvas.drawBitmap(crop, x, y, null); //draw an image
+            canvas.drawBitmap(crop, x, y, null);
         }
     }
 
@@ -118,17 +134,18 @@ class Sprite {
         this.sheet_rows = rows;
         this.sheet_cols = cols;
         this.baseAnimationDelay = this.animationDelay = delay;
+        this.doAnimations = delay != -1;
     }
-    /*
-    private int getAnimationRow() {
-        if (Math.abs(vX)>Math.abs(vY)){         //if magnitude of x is bigger than magnitude y
-            if(Math.abs(vX)==vX) return RIGHT;  //if x is positive return row 2 for right
-            else return LEFT;                          //if x is negative return row 1 for left
-        } else if(Math.abs(vY)==vY) return DOWN;      //if y is positive return row 0 for up
-        else return UP;                                 //if y is positive return row 3 for up
 
+    public void rotateSprite() {
+        rotateSprite((float) Math.atan2(vY, vX));
     }
-    */
+
+    public void rotateSprite(float theta) {
+        Matrix matrix = new Matrix();
+        matrix.setRotate((float)Math.toDegrees(theta), width / 2, height / 2); // rotate around center
+        rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
 
     public int getColor() {
         return color;
@@ -149,13 +166,36 @@ class Sprite {
     public void grow(int i) {
         width += i;
         height += i;
+        //bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
     public boolean intersectCircle(Sprite other) {
         float r1 = width / 2;
         float r2 = other.width / 2;
-        double dist = Math.pow(Math.pow(x + r1 - other.x - r2, 2) + Math.pow(y + r1 - other.y - r2, 2), 0.5);
-        double rads = r1 + r2;
+        double dist = Math.pow(x + r1 - other.x - r2, 2) + Math.pow(y + r1 - other.y - r2, 2);
+        double rads = Math.pow(r1 + r2, 2);
         return dist < rads; // collide if dist is less than rads combined
+    }
+
+    public void bounceCircle(Sprite other) {
+//        float dx = this.x - other.x;
+//        float dy = this.y - other.y;
+//        double theta = Math.atan2(dy, dx);
+//        double newV = Math.pow(Math.pow(vX, 2) + Math.pow(vY, 2), 0.5) + Math.pow(Math.pow(other.vX, 2) + Math.pow(other.vY, 2), 0.5);
+//        newV /= 2;
+//        this.vX  += (float)(newV * Math.cos(theta));
+//        this.vY  += (float)(newV * Math.sin(theta));
+//        other.vX -= (float)(newV * Math.cos(theta));
+//        other.vX -= (float)(newV * Math.sin(theta));
+
+        double d = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+        double nx = (other.x - this.x) / d;
+        double ny = (other.y - this.y) / d;
+        double p = 2 * (vX * nx + this.vY * ny - other.vX * nx - other.vY * ny) /
+                (this.mass + other.mass);
+        this.vX  = (float)(this.vX - p  * this.mass  * nx);
+        this.vY  = (float)(this.vY - p  * this.mass  * ny);
+        other.vX = (float)(other.vX + p * other.mass * nx);
+        other.vY = (float)(other.vY + p * other.mass * ny);
     }
 }

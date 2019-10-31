@@ -7,42 +7,52 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_angle"
-        style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="304dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_offset"
-        style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_angle"
-        android:layout_marginLeft="304dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_angle" />
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        class="traf1.carrdaniel.animationtest.DrawView"
+        app:layout_constraintTop_toBottomOf="@+id/score_text"
+        app:layout_constraintBottom_toTopOf="@+id/score_text2"
+        android:id="@+id/drawView"/>
 
     <TextView
         android:id="@+id/score_text"
         style="@style/TextAppearance.AppCompat.Subhead"
+        android:textSize="24sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_offset"
-        android:layout_marginLeft="304dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_offset" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/joystick"
+        tools:layout_editor_absoluteY="16dp"
+        android:rotation="180"/>
+
+    <TextView
+        android:id="@+id/label_score_text1"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:text="Score: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/score_text2"
+        app:layout_constraintTop_toTopOf="@id/joystick"
+        android:rotation="180"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_pause"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/drawView"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
     <traf1.carrdaniel.animationtest.Joystick
         android:id="@+id/joystick"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="220dp"
+        android:layout_marginEnd="244dp"
         android:background="@drawable/bg_base"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +60,49 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.055">
+        app:layout_constraintVertical_bias="0.027">
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/bg_stick_red" />
+
+    </traf1.carrdaniel.animationtest.Joystick>
+
+    <TextView
+        android:id="@+id/score_text2"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/joystick2" />
+
+    <TextView
+        android:id="@+id/label_score_text2"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:text="Score: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        app:layout_constraintRight_toLeftOf="@id/score_text2"
+        app:layout_constraintBottom_toBottomOf="@id/joystick2" />
+
+    <traf1.carrdaniel.animationtest.Joystick
+        android:id="@+id/joystick2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_base"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.972">
 
         <Button
             android:layout_width="70dp"
@@ -60,63 +112,17 @@
     </traf1.carrdaniel.animationtest.Joystick>
 
     <TextView
-        android:id="@+id/welcomeText"
+        android:id="@+id/color_wins"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:text="Red Wins!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="128dp"
-        android:text="@string/welcome"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
-        app:layout_constraintHorizontal_bias="0.789"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="48sp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
-
-    <view
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        class="traf1.carrdaniel.animationtest.DrawView"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar"
-        app:layout_constraintBottom_toTopOf="@+id/leftButton"
-        android:id="@+id/drawView"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/drawView"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/rightButton"
-        android:id="@+id/leftButton"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/drawView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/leftButton"
-        app:layout_constraintRight_toLeftOf="@+id/greenCheckBox"
-        android:id="@+id/redCheckBox"/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/drawView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/redCheckBox"
-        app:layout_constraintRight_toLeftOf="@+id/rightButton"
-        android:id="@+id/greenCheckBox"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/drawView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/leftButton"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/rightButton"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
